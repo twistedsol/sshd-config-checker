@@ -60,7 +60,13 @@ python -m unittest -v
 
 I used AI to help write the code and tests, then ran everything myself, read each rule and checked the sample results by hand. The rules follow common SSH hardening advice.
 
-## Limits
+## What I learned
+
+- A setting you leave out still has a default. OpenSSH allows password logins unless you say no, so "not set" can be a finding too.
+- sshd uses the first value it finds, so a second `PermitRootLogin yes` further down the file does nothing. One of my own tests failed because I forgot this, and the tool was right and my test was wrong.
+- Settings under a `Match` line only apply to some users, so the tool skips them and says so instead of guessing.
+-
+- ## Limits
 
 - It reads the file only. The real running server may be set differently, for example by an included file or a command-line flag.
 - Lines after a `Match` line are not checked, because they only apply to certain users or hosts. The tool prints a note when it skips them.
